@@ -37,10 +37,12 @@ const updateProductStockFromOrder: RequestHandler = catchAsync(
   async (req, res) => {
     const { items } = req.body
 
-    const updatePromises = items.map(async (item) => {
-      const { productId, quantity } = item
-      await ProductServices.updateProductStockIntoDB(productId, quantity)
-    })
+    const updatePromises = items.map(
+      async (item: { productId: string; quantity: number }) => {
+        const { productId, quantity } = item
+        await ProductServices.updateProductStockIntoDB(productId, quantity)
+      },
+    )
 
     await Promise.all(updatePromises)
 
